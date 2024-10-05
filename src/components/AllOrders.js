@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom'; 
 
+import Layout from '../layouts/Layout';
+
 const AllOrders = () => {
   const [orders, setOrders] = useState([]);
 
@@ -17,6 +19,7 @@ const AllOrders = () => {
   }, []);
 
   return (
+    <Layout>
       <div>
         <h1>All Orders</h1>
         <table className="table">
@@ -54,6 +57,7 @@ const AllOrders = () => {
         </table>
         {/* <Link to="/add-order">Add Order</Link> */}
       </div>
+      </Layout>
   )
 }
 
