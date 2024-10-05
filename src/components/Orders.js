@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPencil, faEye } from '@fortawesome/free-solid-svg-icons';
 import Layout from '../layouts/Layout';
 import UpdateOrderModal from "./UpdateOrderModal";
+import ViewOrderModal from "./ViewOrderModal";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -12,6 +13,8 @@ const Orders = () => {
   const [filter, setFilter] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  //const [selectedOrder, setSelectedOrder] = useState(null);
+  const [showViewModal, setShowViewModal] = useState(false);
 
   // Handle input change
   const handleFilterChange = (event) => {
@@ -67,6 +70,30 @@ const Orders = () => {
     setOrders(orders.map(order => order.id === updatedOrder.id ? updatedOrder : order));
   };
 
+  // View order
+  const handleViewOrder = (order) => {
+    setSelectedOrder(order);
+    setShowViewModal(true);
+  };
+
+  // Delete order
+  const handleDelete = (id) => {
+    const res = window.confirm('Are you sure you want to delete this order?');
+    if (res) {
+      axios.delete(`https://localhost:7022/api/order/${id}`)
+      .then(response => {
+        if(response.status === 200){
+          alert('Order deleted successfully');
+        }
+        setOrders(orders.filter(order => order.id !== id));
+      })
+      .catch(error => {
+        alert('An error occurred. Please try again');
+        console.log(error);
+      });
+    } 
+  };
+
   return (
     <Layout>
       <div>
@@ -77,7 +104,7 @@ const Orders = () => {
         <table className="table table-hover table-striped">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>#</th>
               <th>Customer ID</th>
               <th>Products</th>
               <th>Quantity</th>
@@ -97,7 +124,7 @@ const Orders = () => {
                   <td>
                     {order.orderItems && order.orderItems.length > 0 ? (
                       order.orderItems.map((item, index) => (
-                        <div key={index}>{item.productId}</div>
+                        <div key={index}>{item.productName}</div>
                       ))
                     ) : (
                       <div>N/A</div>
@@ -118,9 +145,9 @@ const Orders = () => {
                   <td>{new Date(order.orderDate).toLocaleDateString()}</td>
                   <td>{order.status}</td>
                   <td>
-                    <button className="btn btn-info btn-sm" style={{marginRight: '5px', color: 'white'}}><FontAwesomeIcon icon={faEye}/></button>
+                    <button className="btn btn-info btn-sm" style={{marginRight: '5px', color: 'white'}} onClick={() => handleViewOrder(order)}><FontAwesomeIcon icon={faEye}/></button>
                     <button className="btn btn-warning btn-sm" style={{marginRight: '5px' , color: 'white'}} onClick={() => handleShow(order)}><FontAwesomeIcon icon={faPencil}/></button>
-                    <button className="btn btn-danger btn-sm"><FontAwesomeIcon icon={faTrash} /></button>
+                    <button className="btn btn-danger btn-sm"><FontAwesomeIcon icon={faTrash} onClick={() => handleDelete(order.id)}/></button>
                   </td>
                 </tr>
               );
@@ -136,7 +163,15 @@ const Orders = () => {
             onUpdate={handleUpdate}
           />
         )}
-        
+
+        {selectedOrder && (
+          <ViewOrderModal
+            show={showViewModal}
+            handleClose={() => setShowViewModal(false)}
+            order={selectedOrder}
+          />
+        )}
+
       </div>
       </Layout>
   )
