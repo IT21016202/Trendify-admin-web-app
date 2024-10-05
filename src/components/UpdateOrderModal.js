@@ -19,13 +19,14 @@ const UpdateOrderModal = ({ show, handleClose, order, onUpdate }) => {
       .then(response => {
         onUpdate(response.data); // Update parent component with the new order
         handleClose(); // Close the modal
-        alert('' + response.data.status + ' order successfully');
+        alert('Order Updated successfully');
       })
       .catch(error => {
         console.log(error);
         if(error.response.status && error.response.status === 400){
           alert(error.response.data);
         }
+        handleClose(); // Close the modal
       });
   };
 
