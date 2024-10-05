@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom'; 
 
+
 import Layout from '../layouts/Layout';
 
 const AllOrders = () => {
@@ -21,7 +22,7 @@ const AllOrders = () => {
   return (
     <Layout>
       <div>
-        <h1>All Orders</h1>
+        <h4 className="pb-3 pt-2" style={{textAlign: "left"}}>ALL ORDERS</h4>
         <table className="table">
           <thead>
             <tr>
@@ -47,8 +48,8 @@ const AllOrders = () => {
                   <td>{new Date(order.orderDate).toLocaleDateString()}</td>
                   <td>{order.status}</td>
                   <td>
-                    <button>Edit</button>
-                    <button>Delete</button>
+                    <button className="btn btn-warning btn-sm" style={{marginRight: '5px'}}>Edit</button>
+                    <button className="btn btn-danger btn-sm">Delete</button>
                   </td>
                 </tr>
               );
