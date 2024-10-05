@@ -1,12 +1,22 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation  } from 'react-router-dom'; 
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faPencil, faEye } from '@fortawesome/free-solid-svg-icons';
 import Layout from '../layouts/Layout';
+import UpdateOrderModal from "./UpdateOrderModal";
 
-const AllOrders = () => {
+const Orders = () => {
   const [orders, setOrders] = useState([]);
   const location = useLocation();
+  const [filter, setFilter] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+
+  // Handle input change
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
+  };
 
   // Extract query parameters from the URL
   const queryParams = new URLSearchParams(location.search);
@@ -32,16 +42,42 @@ const AllOrders = () => {
       });
   }, [orderType]);
 
+  // Filter products based on the filter input
+  const filteredOrders = orders.filter(order => {
+      const userFilter = order.userId.toLowerCase().includes(filter.toLowerCase());
+      const dateFilter = order.orderDate.toLowerCase().includes(filter.toLowerCase());
+      const priceFilter = order.orderTotal.toString().toLowerCase().includes(filter.toLowerCase());
+      return userFilter || dateFilter || priceFilter;
+  });
+
+  // Show modal
+  const handleShow = (order) => {
+    setSelectedOrder(order);
+    setShowModal(true);
+  };
+
+  // Close modal
+  const handleClose = () => {
+    setShowModal(false);
+    setSelectedOrder(null);
+  };
+
+  // Update order
+  const handleUpdate = (updatedOrder) => {
+    setOrders(orders.map(order => order.id === updatedOrder.id ? updatedOrder : order));
+  };
+
   return (
     <Layout>
       <div>
         <h4 className="pb-3 pt-2" style={{textAlign: "left"}}>
           {orderType === 'all' ? 'ALL ORDERS' : orderType === 'processing' ? 'PROCESSING ORDERS' : orderType === 'dispatched' ? 'DISPATCHED ORDERS' : orderType === 'delivered' ? 'DELIVERED ORDERS' : orderType === 'cancelled' ? 'CANCELLED ORDERS' : 'ALL ORDERS'}
         </h4>
-        <table className="table">
+        <input type="text" placeholder="Search Orders" value={filter} onChange={handleFilterChange} className="form-control mb-3" style={{width: '350px', float: 'right'}}/>
+        <table className="table table-hover table-striped">
           <thead>
             <tr>
-              <th>#</th>
+              <th>ID</th>
               <th>Customer ID</th>
               <th>Products</th>
               <th>Quantity</th>
@@ -52,30 +88,58 @@ const AllOrders = () => {
             </tr>
           </thead>
           <tbody>
-            {orders?.map((order, index) => {
+            {filteredOrders?.map((order, index) => {
               return (
                 <tr key={order.id}>
                   <td>{index+1}</td>
                   <td>{order.userId}</td>
-                  <td>N/A</td>
-                  <td>N/A</td>
+
+                  <td>
+                    {order.orderItems && order.orderItems.length > 0 ? (
+                      order.orderItems.map((item, index) => (
+                        <div key={index}>{item.productId}</div>
+                      ))
+                    ) : (
+                      <div>N/A</div>
+                    )}
+                  </td>
+
+                  <td>
+                    {order.orderItems && order.orderItems.length > 0 ? (
+                      order.orderItems.map((item, index) => (
+                        <div key={index}>{item.quantity}</div>
+                      ))
+                    ) : (
+                      <div>N/A</div>
+                    )}
+                  </td>
+
                   <td>{order.orderTotal}</td>
                   <td>{new Date(order.orderDate).toLocaleDateString()}</td>
                   <td>{order.status}</td>
                   <td>
-                    <button className="btn btn-info btn-sm" style={{marginRight: '5px'}}>View</button>
-                    <button className="btn btn-warning btn-sm" style={{marginRight: '5px'}}>Edit</button>
-                    <button className="btn btn-danger btn-sm">Delete</button>
+                    <button className="btn btn-info btn-sm" style={{marginRight: '5px', color: 'white'}}><FontAwesomeIcon icon={faEye}/></button>
+                    <button className="btn btn-warning btn-sm" style={{marginRight: '5px' , color: 'white'}} onClick={() => handleShow(order)}><FontAwesomeIcon icon={faPencil}/></button>
+                    <button className="btn btn-danger btn-sm"><FontAwesomeIcon icon={faTrash} /></button>
                   </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
-        {/* <Link to="/add-order">Add Order</Link> */}
+
+        {selectedOrder && (
+          <UpdateOrderModal
+            show={showModal}
+            handleClose={handleClose}
+            order={selectedOrder}
+            onUpdate={handleUpdate}
+          />
+        )}
+        
       </div>
       </Layout>
   )
 }
 
-export default AllOrders
+export default Orders
