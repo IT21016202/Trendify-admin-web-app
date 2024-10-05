@@ -1,5 +1,3 @@
-// src/components/Layout.js
-
 import React from 'react';
 import { Container, Row, Col, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
