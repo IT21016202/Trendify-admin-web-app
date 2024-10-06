@@ -44,19 +44,19 @@ const Layout = ({ children }) => {
               {openSubNav.order && (
                 <Nav className="flex-column ms-3">
                   <Nav.Item>
-                    <Nav.Link as={Link} to="/orders/all" className={`text-white ${location.pathname === '/orders/all' ? 'active' : ''}`}>All Orders</Nav.Link>
+                    <Nav.Link as={Link} to="/orders?type=all" className={`text-white ${location.search === '?type=all' ? 'active' : ''}`}>All Orders</Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Nav.Link as={Link} to="/orders/processing" className={`text-white ${location.pathname === '/orders/processing' ? 'active' : ''}`}>Processing</Nav.Link>
+                    <Nav.Link as={Link} to="/orders?type=processing" className={`text-white ${location.search === '?type=processing' ? 'active' : ''}`}>Processing</Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Nav.Link as={Link} to="/child2" className="text-white">Dispatched</Nav.Link>
+                    <Nav.Link as={Link} to="/orders?type=dispatched" className={`text-white ${location.search === '?type=dispatched' ? 'active' : ''}`}>Dispatched</Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Nav.Link as={Link} to="/child2" className="text-white">Delivered</Nav.Link>
+                    <Nav.Link as={Link} to="/orders?type=delivered" className={`text-white ${location.search === '?type=delivered' ? 'active' : ''}`}>Delivered</Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Nav.Link as={Link} to="/child2" className="text-white">Cancelled</Nav.Link>
+                    <Nav.Link as={Link} to="/orders?type=cancelled" className={`text-white ${location.search === '?type=cancelled' ? 'active' : ''}`}>Cancelled</Nav.Link>
                   </Nav.Item>
                 </Nav>
               )}
