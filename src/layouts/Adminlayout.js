@@ -1,29 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Nav } from "react-bootstrap";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../css/layout.css";
 
 const Adminlayout = ({ children }) => {
   // State to manage the open/close of child nav links
-  const [openSubNav, setOpenSubNav] = useState({});
-  const location = useLocation();
 
-  // Check the location path and set the initial openSubNav state
+  const navigate = useNavigate();
+
   useEffect(() => {
-    if (location.pathname.startsWith("/orders")) {
-      setOpenSubNav({ order: true });
-    } else {
-      setOpenSubNav({ order: false });
-    }
-  }, [location.pathname]);
+    const storedUserData = localStorage.getItem("userData");
 
-  // Function to toggle the open/close of child nav links
-  const toggleSubNav = (key) => {
-    setOpenSubNav((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
-  };
+    if (storedUserData) {
+      const user = JSON.parse(storedUserData);
+      console.log(user); // Access user properties like user.name, user.email, etc.
+
+      if (user.userType !== "Admin") {
+        navigate("/login");
+      }
+    } else {
+      console.error("No user data found in localStorage.");
+    }
+  }, []);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -48,39 +46,7 @@ const Adminlayout = ({ children }) => {
       <div
         className="collapse navbar-collapse justify-content-center"
         id="navbarText"
-      >
-        <ul className="navbar-nav">
-          <li className="nav-item active mx-3">
-            {" "}
-            {/* Add mx-3 for horizontal margin */}
-            <a className="nav-link" href="/admin" style={{ color: "white" }}>
-              Home
-            </a>
-          </li>
-          <li className="nav-item mx-3">
-            {" "}
-            {/* Add mx-3 for horizontal margin */}
-            <a
-              className="nav-link"
-              href="/admin/vendors"
-              style={{ color: "white" }}
-            >
-              Vendors
-            </a>
-          </li>
-          <li className="nav-item mx-3">
-            {" "}
-            {/* Add mx-3 for horizontal margin */}
-            <a
-              className="nav-link"
-              href="/admin/customers"
-              style={{ color: "white" }}
-            >
-              Customers
-            </a>
-          </li>
-        </ul>
-      </div>
+      ></div>
     </nav>
   );
 };

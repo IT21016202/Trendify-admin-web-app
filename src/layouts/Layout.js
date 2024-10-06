@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Nav } from 'react-bootstrap';
-import { Link, useLocation } from 'react-router-dom';
-import '../css/layout.css';
+import React, { useState, useEffect } from "react";
+import { Container, Row, Col, Nav } from "react-bootstrap";
+import { Link, useLocation } from "react-router-dom";
+import "../css/layout.css";
 
 const Layout = ({ children }) => {
   // State to manage the open/close of child nav links
@@ -10,7 +10,7 @@ const Layout = ({ children }) => {
 
   // Check the location path and set the initial openSubNav state
   useEffect(() => {
-    if (location.pathname.startsWith('/orders')) {
+    if (location.pathname.startsWith("/orders")) {
       setOpenSubNav({ order: true });
     } else {
       setOpenSubNav({ order: false });
@@ -30,46 +30,104 @@ const Layout = ({ children }) => {
       <Row>
         {/* Sidebar */}
         <Col md={2} className="bg-dark vh-100">
-          <Nav className="flex-column p-3 pt-4" style={{ textAlign: 'left' }}>
+          <Nav className="flex-column p-3 pt-4" style={{ textAlign: "left" }}>
             <Nav.Item>
               <Nav.Link
                 as={Link}
                 to="#"
                 className="text-white"
-                style={{fontSize: '18px', fontWeight: 'bold'}}
-                onClick={() => toggleSubNav('order')}
+                style={{ fontSize: "18px", fontWeight: "bold" }}
+                onClick={() => toggleSubNav("order")}
               >
                 Orders
               </Nav.Link>
               {openSubNav.order && (
                 <Nav className="flex-column ms-3">
                   <Nav.Item>
-                    <Nav.Link as={Link} to="/orders?type=all" className={`text-white ${location.search === '?type=all' ? 'active' : ''}`}>All Orders</Nav.Link>
+                    <Nav.Link
+                      as={Link}
+                      to="/orders?type=all"
+                      className={`text-white ${
+                        location.search === "?type=all" ? "active" : ""
+                      }`}
+                    >
+                      All Orders
+                    </Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Nav.Link as={Link} to="/orders?type=processing" className={`text-white ${location.search === '?type=processing' ? 'active' : ''}`}>Processing</Nav.Link>
+                    <Nav.Link
+                      as={Link}
+                      to="/orders?type=processing"
+                      className={`text-white ${
+                        location.search === "?type=processing" ? "active" : ""
+                      }`}
+                    >
+                      Processing
+                    </Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Nav.Link as={Link} to="/orders?type=dispatched" className={`text-white ${location.search === '?type=dispatched' ? 'active' : ''}`}>Dispatched</Nav.Link>
+                    <Nav.Link
+                      as={Link}
+                      to="/orders?type=dispatched"
+                      className={`text-white ${
+                        location.search === "?type=dispatched" ? "active" : ""
+                      }`}
+                    >
+                      Dispatched
+                    </Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Nav.Link as={Link} to="/orders?type=delivered" className={`text-white ${location.search === '?type=delivered' ? 'active' : ''}`}>Delivered</Nav.Link>
+                    <Nav.Link
+                      as={Link}
+                      to="/orders?type=delivered"
+                      className={`text-white ${
+                        location.search === "?type=delivered" ? "active" : ""
+                      }`}
+                    >
+                      Delivered
+                    </Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Nav.Link as={Link} to="/orders?type=cancelled" className={`text-white ${location.search === '?type=cancelled' ? 'active' : ''}`}>Cancelled</Nav.Link>
+                    <Nav.Link
+                      as={Link}
+                      to="/orders?type=cancelled"
+                      className={`text-white ${
+                        location.search === "?type=cancelled" ? "active" : ""
+                      }`}
+                    >
+                      Cancelled
+                    </Nav.Link>
                   </Nav.Item>
                 </Nav>
               )}
             </Nav.Item>
 
             <Nav.Item>
-              <Nav.Link as={Link} to="/" className="text-white">Home</Nav.Link>
+              <Nav.Link as={Link} to="/" className="text-white">
+                Home
+              </Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link as={Link} to="/profile" className="text-white">Profile</Nav.Link>
+              <Nav.Link
+                as={Link}
+                to="/admin/customers"
+                className={`text-white ${
+                  location.pathname === "/admin/customers" ? "active" : ""
+                }`}
+              >
+                Customers
+              </Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link as={Link} to="/settings" className="text-white">Settings</Nav.Link>
+              <Nav.Link
+                as={Link}
+                to="/admin/vendors"
+                className={`text-white ${
+                  location.pathname === "/admin/vendors" ? "active" : ""
+                }`}
+              >
+                Vendors
+              </Nav.Link>
             </Nav.Item>
           </Nav>
         </Col>

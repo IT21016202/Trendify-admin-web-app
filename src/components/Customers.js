@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Adminlayout from "../layouts/Adminlayout";
 import axios from "axios";
+import Layout from "../layouts/Layout";
 
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
@@ -67,80 +68,83 @@ const Customers = () => {
   };
 
   return (
-    <div>
-      <Adminlayout />
-      <h1 style={{ fontSize: "2rem", margin: "20px 0" }}>Customers</h1>
-      <center>
-        <div style={{ overflowX: "auto" }}>
-          <table
-            className="table table-bordered mx-4"
-            style={{ width: "80%", margin: "0 auto" }}
-          >
-            <thead>
-              <tr>
-                <th scope="col" style={{ width: "10%" }}>
-                  Id
-                </th>
-                <th scope="col" style={{ width: "30%" }}>
-                  Customer Name
-                </th>
-                <th scope="col" style={{ width: "30%" }}>
-                  Email
-                </th>{" "}
-                <th scope="col" style={{ width: "30%" }}>
-                  Account Status
-                </th>
-                <th scope="col" style={{ width: "40%" }}>
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {customers.map(
-                (
-                  customer,
-                  index // Map through customer data
-                ) => (
-                  <tr key={customer.id}>
-                    <td style={{ textAlign: "center" }}>{customer.id}</td>
-                    <td style={{ textAlign: "center" }}>
-                      {customer.customerName}
-                    </td>
-                    <td style={{ textAlign: "center" }}>{customer.email}</td>
-                    <td style={{ textAlign: "center" }}>
-                      <span
-                        style={{
-                          color: customer.status === "Active" ? "green" : "red",
-                        }}
-                      >
-                        {customer.status}
-                      </span>
-                    </td>
-                    <td style={{ textAlign: "center" }}>
-                      {customer.status === "Active" ? (
-                        <button
-                          className="btn btn-warning"
-                          onClick={() => handleDeactivate(customer.id)}
+    <Layout>
+      <div>
+        <Adminlayout />
+        <h1 style={{ fontSize: "2rem", margin: "20px 0" }}>Customers</h1>
+        <center>
+          <div style={{ overflowX: "auto" }}>
+            <table
+              className="table table-bordered mx-4"
+              style={{ width: "80%", margin: "0 auto" }}
+            >
+              <thead>
+                <tr>
+                  <th scope="col" style={{ width: "10%" }}>
+                    Id
+                  </th>
+                  <th scope="col" style={{ width: "30%" }}>
+                    Customer Name
+                  </th>
+                  <th scope="col" style={{ width: "30%" }}>
+                    Email
+                  </th>{" "}
+                  <th scope="col" style={{ width: "30%" }}>
+                    Account Status
+                  </th>
+                  <th scope="col" style={{ width: "40%" }}>
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {customers.map(
+                  (
+                    customer,
+                    index // Map through customer data
+                  ) => (
+                    <tr key={customer.id}>
+                      <td style={{ textAlign: "center" }}>{customer.id}</td>
+                      <td style={{ textAlign: "center" }}>
+                        {customer.customerName}
+                      </td>
+                      <td style={{ textAlign: "center" }}>{customer.email}</td>
+                      <td style={{ textAlign: "center" }}>
+                        <span
+                          style={{
+                            color:
+                              customer.status === "Active" ? "green" : "red",
+                          }}
                         >
-                          Deactivate
-                        </button>
-                      ) : (
-                        <button
-                          className="btn btn-success"
-                          onClick={() => handleActivate(customer.id)}
-                        >
-                          Activate
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                )
-              )}
-            </tbody>
-          </table>
-        </div>
-      </center>
-    </div>
+                          {customer.status}
+                        </span>
+                      </td>
+                      <td style={{ textAlign: "center" }}>
+                        {customer.status === "Active" ? (
+                          <button
+                            className="btn btn-warning"
+                            onClick={() => handleDeactivate(customer.id)}
+                          >
+                            Deactivate
+                          </button>
+                        ) : (
+                          <button
+                            className="btn btn-success"
+                            onClick={() => handleActivate(customer.id)}
+                          >
+                            Activate
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  )
+                )}
+              </tbody>
+            </table>
+          </div>
+        </center>
+      </div>
+    </Layout>
   );
 };
 

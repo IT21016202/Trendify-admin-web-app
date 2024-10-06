@@ -5,6 +5,7 @@ import { Modal } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Bounce } from "react-toastify";
+import Layout from "../layouts/Layout";
 
 const Vendors = () => {
   const [customers, setCustomers] = useState([]);
@@ -110,177 +111,181 @@ const Vendors = () => {
     }
   };
   return (
-    <div>
-      <Adminlayout />
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          margin: "20px 0",
-        }}
-      >
-        <h1
+    <Layout>
+      <div>
+        <Adminlayout />
+        <div
           style={{
-            fontSize: "2rem",
-            margin: 0,
-            textAlign: "center",
-            flexGrow: 1, // Use flexGrow to allow it to expand
             display: "flex",
-            justifyContent: "center", // Center the text within the flex item
+            justifyContent: "space-between",
+            alignItems: "center",
+            margin: "20px 0",
           }}
         >
-          Vendors
-        </h1>
-        <button
-          onClick={handleShow}
-          className="btn btn-primary"
-          style={{ marginRight: "20px" }} // Adjust margin as needed
-        >
-          Add Vendor
-        </button>
-      </div>
-
-      {/* Modal */}
-      <Modal show={showModal} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add New Vendor</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {error && <div className="alert alert-danger">{error}</div>}{" "}
-          {/* Show error message if any */}
-          <form>
-            <div className="mb-3">
-              <label htmlFor="vendorName" className="form-label">
-                Vendor Name
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="vendorName"
-                value={vendorName}
-                onChange={(e) => setVendorName(e.target.value)} // Update state on input change
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="vendorEmail" className="form-label">
-                Email
-              </label>
-              <input
-                type="email"
-                className="form-control"
-                id="vendorEmail"
-                value={vendorEmail}
-                onChange={(e) => setVendorEmail(e.target.value)} // Update state on input change
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="vendorPhone" className="form-label">
-                Phone Number
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="vendorPhone"
-                value={vendorPhone}
-                onChange={(e) => setVendorPhone(e.target.value)} // Update state on input change
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="vendorPassword" className="form-label">
-                Password
-              </label>
-              <input
-                type="password"
-                className="form-control"
-                id="vendorPassword"
-                value={vendorPassword}
-                onChange={(e) => setVendorPassword(e.target.value)} // Update state on input change
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="vendorPassword" className="form-label">
-                Password
-              </label>
-              <input
-                type="password"
-                className="form-control"
-                id="vendorCPassword"
-                value={vendorCPassword}
-                onChange={(e) => setVendorCPassword(e.target.value)} // Update state on input change
-                required
-              />
-            </div>
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            onClick={(e) => {
-              createVendor(e);
+          <h1
+            style={{
+              fontSize: "2rem",
+              margin: 0,
+              textAlign: "center",
+              flexGrow: 1, // Use flexGrow to allow it to expand
+              display: "flex",
+              justifyContent: "center", // Center the text within the flex item
             }}
           >
-            Save Vendor
-          </button>
-        </Modal.Footer>
-      </Modal>
-      <center>
-        <div style={{ overflowX: "auto" }}>
-          <table
-            className="table table-bordered mx-4"
-            style={{ width: "80%", margin: "0 auto" }}
+            Vendors
+          </h1>
+          <button
+            onClick={handleShow}
+            className="btn btn-primary"
+            style={{ marginRight: "20px" }} // Adjust margin as needed
           >
-            <thead>
-              <tr>
-                <th scope="col" style={{ width: "10%" }}>
-                  Id
-                </th>
-                <th scope="col" style={{ width: "30%" }}>
-                  Vendor Name
-                </th>
-                <th scope="col" style={{ width: "30%" }}>
-                  Email
-                </th>
-                <th scope="col" style={{ width: "30%" }}>
-                  Phone Number
-                </th>
-                <th scope="col" style={{ width: "30%" }}>
-                  Description
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {customers
-                .filter((customer) => customer.userType === "Vendor") // Filter for vendors
-                .map(
-                  (
-                    customer,
-                    index // Map through filtered customer data
-                  ) => (
-                    <tr key={customer.id}>
-                      <td style={{ textAlign: "center" }}>{customer.id}</td>
-                      <td style={{ textAlign: "center" }}>{customer.name}</td>
-                      <td style={{ textAlign: "center" }}>{customer.email}</td>
-                      <td style={{ textAlign: "center" }}>
-                        {customer.phoneNumber}
-                      </td>
-                      <td style={{ textAlign: "center" }}>
-                        {customer.description}
-                      </td>
-                    </tr>
-                  )
-                )}
-            </tbody>
-          </table>
+            Add Vendor
+          </button>
         </div>
-      </center>
-      <ToastContainer />
-    </div>
+
+        {/* Modal */}
+        <Modal show={showModal} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add New Vendor</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {error && <div className="alert alert-danger">{error}</div>}{" "}
+            {/* Show error message if any */}
+            <form>
+              <div className="mb-3">
+                <label htmlFor="vendorName" className="form-label">
+                  Vendor Name
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="vendorName"
+                  value={vendorName}
+                  onChange={(e) => setVendorName(e.target.value)} // Update state on input change
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="vendorEmail" className="form-label">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  className="form-control"
+                  id="vendorEmail"
+                  value={vendorEmail}
+                  onChange={(e) => setVendorEmail(e.target.value)} // Update state on input change
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="vendorPhone" className="form-label">
+                  Phone Number
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="vendorPhone"
+                  value={vendorPhone}
+                  onChange={(e) => setVendorPhone(e.target.value)} // Update state on input change
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="vendorPassword" className="form-label">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="vendorPassword"
+                  value={vendorPassword}
+                  onChange={(e) => setVendorPassword(e.target.value)} // Update state on input change
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="vendorPassword" className="form-label">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="vendorCPassword"
+                  value={vendorCPassword}
+                  onChange={(e) => setVendorCPassword(e.target.value)} // Update state on input change
+                  required
+                />
+              </div>
+            </form>
+          </Modal.Body>
+          <Modal.Footer>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              onClick={(e) => {
+                createVendor(e);
+              }}
+            >
+              Save Vendor
+            </button>
+          </Modal.Footer>
+        </Modal>
+        <center>
+          <div style={{ overflowX: "auto" }}>
+            <table
+              className="table table-bordered mx-4"
+              style={{ width: "80%", margin: "0 auto" }}
+            >
+              <thead>
+                <tr>
+                  <th scope="col" style={{ width: "10%" }}>
+                    Id
+                  </th>
+                  <th scope="col" style={{ width: "30%" }}>
+                    Vendor Name
+                  </th>
+                  <th scope="col" style={{ width: "30%" }}>
+                    Email
+                  </th>
+                  <th scope="col" style={{ width: "30%" }}>
+                    Phone Number
+                  </th>
+                  <th scope="col" style={{ width: "30%" }}>
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {customers
+                  .filter((customer) => customer.userType === "Vendor") // Filter for vendors
+                  .map(
+                    (
+                      customer,
+                      index // Map through filtered customer data
+                    ) => (
+                      <tr key={customer.id}>
+                        <td style={{ textAlign: "center" }}>{customer.id}</td>
+                        <td style={{ textAlign: "center" }}>{customer.name}</td>
+                        <td style={{ textAlign: "center" }}>
+                          {customer.email}
+                        </td>
+                        <td style={{ textAlign: "center" }}>
+                          {customer.phoneNumber}
+                        </td>
+                        <td style={{ textAlign: "center" }}>
+                          {customer.description}
+                        </td>
+                      </tr>
+                    )
+                  )}
+              </tbody>
+            </table>
+          </div>
+        </center>
+        <ToastContainer />
+      </div>
+    </Layout>
   );
 };
 
