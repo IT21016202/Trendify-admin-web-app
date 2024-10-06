@@ -39,6 +39,19 @@ const Login = () => {
           theme: "colored",
           transition: Bounce,
         });
+
+        const responseString = JSON.stringify(response.data);
+        localStorage.setItem("userData", responseString);
+
+        if (response.data.userType === "Vendor") {
+          // Redirect to vendor page
+          navigate("/vendor"); // Change to your vendor page URL
+        } else if (response.data.userType === "Admin") {
+          // Redirect to admin page
+          navigate("/admin"); // Change to your admin page URL
+        } else {
+          console.log("User type not recognized.");
+        }
       }
     } catch (error) {
       console.error("Error during login:", error.response.data);
