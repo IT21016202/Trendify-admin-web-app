@@ -5,6 +5,9 @@ import "../css/Admininventory.css"; // Import your custom CSS
 import axios from "axios";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
+import alert from "../images/alert.png";
+import { Modal } from "react-bootstrap";
+import { toast, ToastContainer } from "react-toastify";
 
 const handleDeleteCategory = () => {};
 
@@ -12,6 +15,14 @@ const Admininventory = () => {
   const [categories, setCategories] = useState([]);
   const [categoryCounts, setCategoryCounts] = useState([]);
   const [newCategoryName, setNewCategoryName] = useState("");
+  const [product, setProduct] = useState([]);
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const [vendorId, setVendorId] = useState("");
+  const [productId, setProductId] = useState("");
 
   ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
@@ -72,7 +83,6 @@ const Admininventory = () => {
     } catch (error) {
       console.error(error.message); // Log any errors
     } finally {
-      // Optional: Any cleanup or final actions can go here
     }
   };
 
@@ -80,6 +90,7 @@ const Admininventory = () => {
   useEffect(() => {
     fetchCategories();
     fetchCategoryCounts();
+    fetchProducts();
   }, []);
 
   const chartData = {
@@ -108,6 +119,69 @@ const Admininventory = () => {
         position: "top",
       },
     },
+  };
+
+  const fetchProducts = () => {
+    axios
+      .get("https://localhost:7022/api/Product/getAllProducts")
+      .then((response) => {
+        const data = response.data;
+
+        // Filter products that have status 'approved'
+        const approvedProducts = data.filter(
+          (product) => product.status === "Approve"
+        );
+
+        setProduct(approvedProducts);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const notifyVendor = (vendorId, productId) => {
+    console.log(vendorId, productId);
+
+    setProductId(productId);
+    setVendorId(vendorId);
+
+    setShowModal(true);
+  };
+
+  const handleClose = () => {
+    setShowModal(false);
+  };
+
+  const handleShow = () => setShowModal(true);
+
+  const sendMessage = () => {
+    const messageData = {
+      vendorId,
+      productId,
+      message,
+    };
+
+    axios
+      .post("https://localhost:7022/api/Notification", messageData)
+      .then((response) => {
+        console.log(response);
+        setMessage("");
+        setShowModal(false);
+
+        toast.success("Send Message to Vendor", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -257,9 +331,6 @@ const Admininventory = () => {
             </tbody>
           </table>
         </div>
-
-        {/* Pie Chart Box */}
-        {/* Pie Chart Component */}
         <div
           className="chart-container"
           style={{ width: "300px", height: "300px", margin: "0 auto" }}
@@ -267,6 +338,188 @@ const Admininventory = () => {
           <h2>Product Count by Category</h2>
           <Pie data={chartData} options={chartOptions} />
         </div>
+      </div>
+
+      {/* Modal */}
+      <Modal show={showModal} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Notify Vendor</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {error && <div className="alert alert-danger">{error}</div>}{" "}
+          {/* Show error message if any */}
+          <form>
+            <div className="mb-3">
+              <label htmlFor="vendorName" className="form-label">
+                Add Message
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)} // Update state on input change
+                required
+              />
+            </div>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <button
+            type="submit"
+            className="btn btn-primary"
+            onClick={(e) => {
+              sendMessage(e);
+            }}
+          >
+            Send
+          </button>
+        </Modal.Footer>
+      </Modal>
+      <div>
+        <center>
+          <table
+            style={{
+              width: "80%", // Full width for the table
+              borderCollapse: "collapse", // Collapse borders
+              margin: "20px 0", // Add spacing between elements
+              fontFamily: "'Arial', sans-serif", // Clean, readable font
+              boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
+            }}
+          >
+            <thead>
+              <tr
+                style={{
+                  backgroundColor: "#4CAF50", // Green header background
+                  color: "white", // White text color
+                  textAlign: "left", // Left align text
+                }}
+              >
+                <th
+                  style={{
+                    padding: "8px 10px",
+                    fontSize: "15px",
+                  }}
+                >
+                  Product Name
+                </th>
+                <th
+                  style={{
+                    padding: "8px 10px",
+                    fontSize: "15px",
+                  }}
+                >
+                  Category
+                </th>
+                <th
+                  style={{
+                    padding: "8px 10px",
+                    fontSize: "15px",
+                  }}
+                >
+                  Quantity
+                </th>
+                <th
+                  style={{
+                    padding: "8px 10px",
+                    fontSize: "15px",
+                  }}
+                >
+                  Vendor Name
+                </th>
+                <th
+                  style={{
+                    padding: "8px 10px",
+                    fontSize: "15px",
+                  }}
+                >
+                  Alert Vendor
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {product.map((product) => (
+                <tr
+                  key={product.id}
+                  style={{
+                    backgroundColor: "#f9f9f9", // Alternating row color
+                    transition: "background-color 0.3s", // Smooth hover effect
+                  }}
+                  onMouseOver={(e) =>
+                    (e.currentTarget.style.backgroundColor = "#f1f1f1")
+                  }
+                  onMouseOut={(e) =>
+                    (e.currentTarget.style.backgroundColor = "#f9f9f9")
+                  }
+                >
+                  <td
+                    style={{
+                      padding: "8px 10px", // Padding inside cells
+                      borderBottom: "1px solid #ddd", // Border between rows
+                      color: "#333", // Darker text for readability
+                    }}
+                  >
+                    {product.productName}
+                  </td>
+                  <td
+                    style={{
+                      padding: "12px 15px",
+                      borderBottom: "1px solid #ddd",
+                      color: "#333",
+                    }}
+                  >
+                    {product.productCategory}
+                  </td>
+                  <td
+                    style={{
+                      padding: "12px 15px",
+                      borderBottom: "1px solid #ddd",
+                      fontWeight: "bolder",
+                      color:
+                        product.productQuantity <= 10
+                          ? "red"
+                          : product.productQuantity < 20
+                          ? "yellow"
+                          : "green", // Set color based on quantity
+                    }}
+                  >
+                    {product.productQuantity}
+                  </td>
+                  <td
+                    style={{
+                      padding: "12px 15px",
+                      borderBottom: "1px solid #ddd",
+                      color: "#333",
+                    }}
+                  >
+                    {product.vendorName}
+                  </td>
+
+                  <td
+                    style={{
+                      padding: "12px 15px",
+                      borderBottom: "1px solid #ddd",
+                      color: "#333",
+                    }}
+                  >
+                    <img
+                      src={alert}
+                      alt=""
+                      srcset=""
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => notifyVendor(product.vendorId, product.id)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </center>
+        <ToastContainer />
       </div>
     </Layout>
   );

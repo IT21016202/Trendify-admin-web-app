@@ -19,6 +19,10 @@ const Adminproducts = () => {
   useEffect(() => {
     console.log(productType);
 
+    fetchProducts();
+  }, [productType]);
+
+  const fetchProducts = () => {
     axios
       .get("https://localhost:7022/api/Product/getAllProducts")
       .then((response) => {
@@ -41,7 +45,7 @@ const Adminproducts = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, [productType]);
+  };
 
   //   const fetchProducts = async () => {
   //     const response = await axios("");
@@ -84,7 +88,7 @@ const Adminproducts = () => {
           icon: "success",
         });
 
-        // fetchProducts();
+        fetchProducts();
       } catch (error) {
         // Handle error
         Swal.fire({
@@ -124,7 +128,7 @@ const Adminproducts = () => {
           icon: "success",
         });
 
-        // fetchProducts();
+        fetchProducts();
       } catch (error) {
         // Handle error
         Swal.fire({
@@ -163,74 +167,168 @@ const Adminproducts = () => {
           className="form-control mb-3"
           style={{ width: "350px", float: "right" }}
         />
-        <table className="table table-hover table-striped">
-          <thead>
+        <table
+          className="table table-hover table-striped"
+          style={{
+            width: "100%",
+            margin: "0 auto",
+            borderCollapse: "separate",
+            borderSpacing: "0 15px",
+            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+            fontFamily: "'Poppins', sans-serif",
+          }}
+        >
+          <thead style={{ backgroundColor: "#f8f9fa", textAlign: "center" }}>
             <tr>
-              <th>Vendor Name</th>
-              <th>Product Name</th>
-              <th>Product Description</th>
-              <th>Product Category</th>
-              <th>Unit Price ($)</th>
-              <th>Status</th>
-              <th>Actions</th>
+              <th
+                style={{ padding: "15px", fontWeight: "600", color: "#4d4d4d" }}
+              >
+                Vendor Name
+              </th>
+              <th
+                style={{ padding: "15px", fontWeight: "600", color: "#4d4d4d" }}
+              >
+                Product Name
+              </th>
+              <th
+                style={{ padding: "15px", fontWeight: "600", color: "#4d4d4d" }}
+              >
+                Product Description
+              </th>
+              <th
+                style={{ padding: "15px", fontWeight: "600", color: "#4d4d4d" }}
+              >
+                Product Category
+              </th>
+              <th
+                style={{ padding: "15px", fontWeight: "600", color: "#4d4d4d" }}
+              >
+                Unit Price ($)
+              </th>
+              <th
+                style={{ padding: "15px", fontWeight: "600", color: "#4d4d4d" }}
+              >
+                Status
+              </th>
+              <th
+                style={{ padding: "15px", fontWeight: "600", color: "#4d4d4d" }}
+              >
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
-            {products?.map((product, index) => {
-              return (
-                <tr key={product.id}>
-                  <td>{product.vendorName}</td>
-                  <td>{product.productName}</td>
-                  <td>{product.productDescription}</td>
-                  <td>{product.productCategory}</td>
-                  <td>{product.unitPrice}</td>
-                  <td>{product.status}</td>
-
-                  <td>
-                    {productType === "pending" ? (
-                      <>
-                        <img
-                          src={tick}
-                          alt=""
-                          srcset=""
-                          style={{ width: "30px", height: "30px" }}
-                          onClick={() => approveProduct(product.id)}
-                        />
-
-                        <img
-                          src={cross}
-                          alt=""
-                          srcset=""
-                          style={{ width: "30px", height: "30px" }}
-                          onClick={() => rejectProduct(product.id)}
-                        />
-                      </>
-                    ) : productType === "approved" ? (
-                      <img
-                        src={cross}
-                        alt=""
-                        srcset=""
-                        style={{ width: "30px", height: "30px" }}
-                        onClick={() => rejectProduct(product.id)}
-                      />
-                    ) : productType === "reject" ? (
+            {products?.map((product, index) => (
+              <tr
+                key={product.id}
+                style={{
+                  backgroundColor: index % 2 === 0 ? "#fdfdfd" : "#ffffff",
+                  boxShadow: "0 2px 6px rgba(0, 0, 0, 0.05)",
+                }}
+              >
+                <td style={{ padding: "12px", textAlign: "center" }}>
+                  {product.vendorName}
+                </td>
+                <td style={{ padding: "12px", textAlign: "center" }}>
+                  {product.productName}
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    textAlign: "center",
+                    fontSize: "15px",
+                  }}
+                >
+                  {product.productDescription}
+                </td>
+                <td style={{ padding: "12px", textAlign: "center" }}>
+                  {product.productCategory}
+                </td>
+                <td style={{ padding: "12px", textAlign: "center" }}>
+                  ${product.unitPrice}
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    textAlign: "center",
+                    fontWeight: "bold",
+                    color: product.status === "Approve" ? "green" : "red",
+                  }}
+                >
+                  {product.status}
+                </td>
+                <td style={{ padding: "12px", textAlign: "center" }}>
+                  {productType === "pending" ? (
+                    <>
                       <img
                         src={tick}
-                        alt=""
-                        srcset=""
-                        style={{ width: "30px", height: "30px" }}
+                        alt="Approve"
+                        style={{
+                          width: "30px",
+                          height: "30px",
+                          cursor: "pointer",
+                          marginRight: "10px",
+                        }}
                         onClick={() => approveProduct(product.id)}
                       />
-                    ) : productType === "all" ? (
-                      product.status === "Approve" ? (
-                        <img
-                          src={cross}
-                          alt=""
-                          srcset=""
-                          style={{ width: "30px", height: "30px" }}
-                          onClick={() => rejectProduct(product.id)}
-                        />
-                      ) : product.status === "Reject" ? (
+                      <img
+                        src={cross}
+                        alt="Reject"
+                        style={{
+                          width: "30px",
+                          height: "30px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => rejectProduct(product.id)}
+                      />
+                    </>
+                  ) : productType === "approved" ? (
+                    <img
+                      src={cross}
+                      alt="Reject"
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => rejectProduct(product.id)}
+                    />
+                  ) : productType === "reject" ? (
+                    <img
+                      src={tick}
+                      alt="Approve"
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => approveProduct(product.id)}
+                    />
+                  ) : productType === "all" ? (
+                    product.status === "Approve" ? (
+                      <img
+                        src={cross}
+                        alt="Reject"
+                        style={{
+                          width: "30px",
+                          height: "30px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => rejectProduct(product.id)}
+                      />
+                    ) : product.status === "Reject" ? (
+                      <img
+                        src={tick}
+                        alt="Approve"
+                        style={{
+                          width: "30px",
+                          height: "30px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => approveProduct(product.id)}
+                      />
+                    ) : (
+                      <>
                         <img
                           src={tick}
                           alt="Approve"
@@ -238,36 +336,30 @@ const Adminproducts = () => {
                             width: "30px",
                             height: "30px",
                             cursor: "pointer",
+                            marginRight: "10px",
                           }}
                           onClick={() => approveProduct(product.id)}
                         />
-                      ) : (
-                        <>
-                          <img
-                            src={tick}
-                            alt=""
-                            srcset=""
-                            style={{ width: "30px", height: "30px" }}
-                            onClick={() => approveProduct(product.id)}
-                          />
-                          <img
-                            src={cross}
-                            alt=""
-                            srcset=""
-                            style={{ width: "30px", height: "30px" }}
-                            onClick={() => rejectProduct(product.id)}
-                          />
-                        </>
-                      )
-                    ) : (
-                      <Button variant="secondary" disabled>
-                        No Actions
-                      </Button>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
+                        <img
+                          src={cross}
+                          alt="Reject"
+                          style={{
+                            width: "30px",
+                            height: "30px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => rejectProduct(product.id)}
+                        />
+                      </>
+                    )
+                  ) : (
+                    <Button variant="secondary" disabled>
+                      No Actions
+                    </Button>
+                  )}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

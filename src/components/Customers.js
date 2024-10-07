@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Adminlayout from "../layouts/Adminlayout";
 import axios from "axios";
 import Layout from "../layouts/Layout";
+import Swal from "sweetalert2";
 
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
@@ -45,26 +46,63 @@ const Customers = () => {
   }
 
   const handleActivate = (customerId) => {
-    // Make API call to activate the customer
-    axios
-      .post(`https://localhost:7022/api/Customer/${customerId}/activate`)
-      .then((response) => {
-        getCustomers();
-      })
-      .catch((error) => {
-        console.error("There was an error activating the customer!", error);
-      });
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Active it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .post(`https://localhost:7022/api/Customer/activate/${customerId}`)
+          .then((response) => {
+            Swal.fire({
+              title: "Account Activated!",
+              text: "User Account activate successfully",
+              icon: "success",
+            });
+
+            getCustomers();
+          })
+          .catch((error) => {
+            console.error("There was an error activating the customer!", error);
+          });
+      }
+    });
   };
 
   const handleDeactivate = (customerId) => {
-    axios
-      .post(`https://localhost:7022/api/Customer/deactivate/${customerId}`)
-      .then((response) => {
-        getCustomers();
-      })
-      .catch((error) => {
-        console.error("There was an error deactivating the customer!", error);
-      });
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Deactive it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .post(`https://localhost:7022/api/Customer/deactivate/${customerId}`)
+          .then((response) => {
+            Swal.fire({
+              title: "Account Deactivated!",
+              text: "User Account deactivate successfully",
+              icon: "success",
+            });
+            getCustomers();
+          })
+          .catch((error) => {
+            console.error(
+              "There was an error deactivating the customer!",
+              error
+            );
+          });
+      }
+    });
   };
 
   return (
@@ -76,69 +114,185 @@ const Customers = () => {
           <div style={{ overflowX: "auto" }}>
             <table
               className="table table-bordered mx-4"
-              style={{ width: "80%", margin: "0 auto" }}
+              style={{
+                width: "80%",
+                margin: "0 auto",
+                borderCollapse: "collapse",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                fontFamily: "'Poppins', sans-serif",
+              }}
             >
-              <thead>
+              <thead style={{ backgroundColor: "#f5f5f5" }}>
                 <tr>
-                  <th scope="col" style={{ width: "10%" }}>
+                  <th
+                    scope="col"
+                    style={{
+                      width: "10%",
+                      padding: "12px",
+                      textAlign: "center",
+                      fontWeight: "bold",
+                      borderBottom: "2px solid #ddd",
+                      color: "#333",
+                    }}
+                  >
                     Id
                   </th>
-                  <th scope="col" style={{ width: "30%" }}>
+                  <th
+                    scope="col"
+                    style={{
+                      width: "30%",
+                      padding: "12px",
+                      textAlign: "center",
+                      fontWeight: "bold",
+                      borderBottom: "2px solid #ddd",
+                      color: "#333",
+                    }}
+                  >
                     Customer Name
                   </th>
-                  <th scope="col" style={{ width: "30%" }}>
+                  <th
+                    scope="col"
+                    style={{
+                      width: "30%",
+                      padding: "12px",
+                      textAlign: "center",
+                      fontWeight: "bold",
+                      borderBottom: "2px solid #ddd",
+                      color: "#333",
+                    }}
+                  >
                     Email
-                  </th>{" "}
-                  <th scope="col" style={{ width: "30%" }}>
+                  </th>
+                  <th
+                    scope="col"
+                    style={{
+                      width: "30%",
+                      padding: "12px",
+                      textAlign: "center",
+                      fontWeight: "bold",
+                      borderBottom: "2px solid #ddd",
+                      color: "#333",
+                    }}
+                  >
                     Account Status
                   </th>
-                  <th scope="col" style={{ width: "40%" }}>
+                  <th
+                    scope="col"
+                    style={{
+                      width: "40%",
+                      padding: "12px",
+                      textAlign: "center",
+                      fontWeight: "bold",
+                      borderBottom: "2px solid #ddd",
+                      color: "#333",
+                    }}
+                  >
                     Action
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {customers.map(
-                  (
-                    customer,
-                    index // Map through customer data
-                  ) => (
-                    <tr key={customer.id}>
-                      <td style={{ textAlign: "center" }}>{customer.id}</td>
-                      <td style={{ textAlign: "center" }}>
-                        {customer.customerName}
-                      </td>
-                      <td style={{ textAlign: "center" }}>{customer.email}</td>
-                      <td style={{ textAlign: "center" }}>
-                        <span
+                {customers.map((customer, index) => (
+                  <tr
+                    key={customer.id}
+                    style={{
+                      backgroundColor: index % 2 === 0 ? "#f9f9f9" : "#fff",
+                      transition: "background-color 0.3s",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#e0f7fa")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.backgroundColor =
+                        index % 2 === 0 ? "#f9f9f9" : "#fff")
+                    }
+                  >
+                    <td
+                      style={{
+                        textAlign: "center",
+                        padding: "10px",
+                        border: "1px solid #ddd",
+                      }}
+                    >
+                      {customer.id}
+                    </td>
+                    <td
+                      style={{
+                        textAlign: "center",
+                        padding: "10px",
+                        border: "1px solid #ddd",
+                      }}
+                    >
+                      {customer.customerName}
+                    </td>
+                    <td
+                      style={{
+                        textAlign: "center",
+                        padding: "10px",
+                        border: "1px solid #ddd",
+                      }}
+                    >
+                      {customer.email}
+                    </td>
+                    <td
+                      style={{
+                        textAlign: "center",
+                        padding: "10px",
+                        border: "1px solid #ddd",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      <span
+                        style={{
+                          color: customer.status === "Active" ? "green" : "red",
+                        }}
+                      >
+                        {customer.status}
+                      </span>
+                    </td>
+                    <td
+                      style={{
+                        textAlign: "center",
+                        padding: "10px",
+                        border: "1px solid #ddd",
+                      }}
+                    >
+                      {customer.status === "Active" ? (
+                        <button
+                          className="btn btn-warning"
                           style={{
-                            color:
-                              customer.status === "Active" ? "green" : "red",
+                            padding: "8px 16px",
+                            fontWeight: "bold",
+                            backgroundColor: "#ffc107",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                            color: "#fff",
                           }}
+                          onClick={() => handleDeactivate(customer.id)}
                         >
-                          {customer.status}
-                        </span>
-                      </td>
-                      <td style={{ textAlign: "center" }}>
-                        {customer.status === "Active" ? (
-                          <button
-                            className="btn btn-warning"
-                            onClick={() => handleDeactivate(customer.id)}
-                          >
-                            Deactivate
-                          </button>
-                        ) : (
-                          <button
-                            className="btn btn-success"
-                            onClick={() => handleActivate(customer.id)}
-                          >
-                            Activate
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                  )
-                )}
+                          Deactivate
+                        </button>
+                      ) : (
+                        <button
+                          className="btn btn-success"
+                          style={{
+                            padding: "8px 16px",
+                            fontWeight: "bold",
+                            backgroundColor: "#28a745",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                            color: "#fff",
+                          }}
+                          onClick={() => handleActivate(customer.id)}
+                        >
+                          Activate
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

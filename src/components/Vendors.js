@@ -206,7 +206,7 @@ const Vendors = () => {
               </div>
               <div className="mb-3">
                 <label htmlFor="vendorPassword" className="form-label">
-                  Password
+                  Confirm Password
                 </label>
                 <input
                   type="password"
@@ -235,50 +235,149 @@ const Vendors = () => {
           <div style={{ overflowX: "auto" }}>
             <table
               className="table table-bordered mx-4"
-              style={{ width: "80%", margin: "0 auto" }}
+              style={{
+                width: "80%",
+                margin: "0 auto",
+                borderCollapse: "collapse",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                fontFamily: "'Roboto', sans-serif",
+              }}
             >
-              <thead>
+              <thead style={{ backgroundColor: "#f4f4f9" }}>
                 <tr>
-                  <th scope="col" style={{ width: "10%" }}>
+                  <th
+                    scope="col"
+                    style={{
+                      width: "10%",
+                      padding: "12px",
+                      textAlign: "center",
+                      fontWeight: "600",
+                      borderBottom: "2px solid #ddd",
+                      color: "#333",
+                    }}
+                  >
                     Id
                   </th>
-                  <th scope="col" style={{ width: "30%" }}>
+                  <th
+                    scope="col"
+                    style={{
+                      width: "30%",
+                      padding: "12px",
+                      textAlign: "center",
+                      fontWeight: "600",
+                      borderBottom: "2px solid #ddd",
+                      color: "#333",
+                    }}
+                  >
                     Vendor Name
                   </th>
-                  <th scope="col" style={{ width: "30%" }}>
+                  <th
+                    scope="col"
+                    style={{
+                      width: "30%",
+                      padding: "12px",
+                      textAlign: "center",
+                      fontWeight: "600",
+                      borderBottom: "2px solid #ddd",
+                      color: "#333",
+                    }}
+                  >
                     Email
                   </th>
-                  <th scope="col" style={{ width: "30%" }}>
+                  <th
+                    scope="col"
+                    style={{
+                      width: "30%",
+                      padding: "12px",
+                      textAlign: "center",
+                      fontWeight: "600",
+                      borderBottom: "2px solid #ddd",
+                      color: "#333",
+                    }}
+                  >
                     Phone Number
                   </th>
-                  <th scope="col" style={{ width: "30%" }}>
+                  <th
+                    scope="col"
+                    style={{
+                      width: "30%",
+                      padding: "12px",
+                      textAlign: "center",
+                      fontWeight: "600",
+                      borderBottom: "2px solid #ddd",
+                      color: "#333",
+                    }}
+                  >
                     Description
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {customers
-                  .filter((customer) => customer.userType === "Vendor") // Filter for vendors
-                  .map(
-                    (
-                      customer,
-                      index // Map through filtered customer data
-                    ) => (
-                      <tr key={customer.id}>
-                        <td style={{ textAlign: "center" }}>{customer.id}</td>
-                        <td style={{ textAlign: "center" }}>{customer.name}</td>
-                        <td style={{ textAlign: "center" }}>
-                          {customer.email}
-                        </td>
-                        <td style={{ textAlign: "center" }}>
-                          {customer.phoneNumber}
-                        </td>
-                        <td style={{ textAlign: "center" }}>
-                          {customer.description}
-                        </td>
-                      </tr>
-                    )
-                  )}
+                  .filter((customer) => customer.userType === "Vendor")
+                  .map((customer, index) => (
+                    <tr
+                      key={customer.id}
+                      style={{
+                        backgroundColor: index % 2 === 0 ? "#f9f9f9" : "#fff",
+                        transition: "background-color 0.3s",
+                        cursor: "pointer",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#e0f7fa")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.backgroundColor =
+                          index % 2 === 0 ? "#f9f9f9" : "#fff")
+                      }
+                    >
+                      <td
+                        style={{
+                          textAlign: "center",
+                          padding: "10px",
+                          border: "1px solid #ddd",
+                        }}
+                      >
+                        {customer.id}
+                      </td>
+                      <td
+                        style={{
+                          textAlign: "center",
+                          padding: "10px",
+                          border: "1px solid #ddd",
+                        }}
+                      >
+                        {customer.name}
+                      </td>
+                      <td
+                        style={{
+                          textAlign: "center",
+                          padding: "10px",
+                          border: "1px solid #ddd",
+                        }}
+                      >
+                        {customer.email}
+                      </td>
+                      <td
+                        style={{
+                          textAlign: "center",
+                          padding: "10px",
+                          border: "1px solid #ddd",
+                        }}
+                      >
+                        {customer.phoneNumber}
+                      </td>
+                      <td
+                        style={{
+                          textAlign: "center",
+                          padding: "10px",
+                          border: "1px solid #ddd",
+                        }}
+                      >
+                        {customer.description}
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
