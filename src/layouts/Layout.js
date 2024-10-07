@@ -5,15 +5,20 @@ import "../css/layout.css";
 
 const Layout = ({ children }) => {
   // State to manage the open/close of child nav links
-  const [openSubNav, setOpenSubNav] = useState({});
+  const [openSubNav, setOpenSubNav] = useState({
+    order: false,
+    product: false,
+  });
   const location = useLocation();
 
   // Check the location path and set the initial openSubNav state
   useEffect(() => {
     if (location.pathname.startsWith("/orders")) {
-      setOpenSubNav({ order: true });
+      setOpenSubNav({ order: true, product: false });
+    } else if (location.pathname.startsWith("/products")) {
+      setOpenSubNav({ order: false, product: true });
     } else {
-      setOpenSubNav({ order: false });
+      setOpenSubNav({ order: false, product: false });
     }
   }, [location.pathname]);
 
@@ -31,6 +36,7 @@ const Layout = ({ children }) => {
         {/* Sidebar */}
         <Col md={2} className="bg-dark vh-100">
           <Nav className="flex-column p-3 pt-4" style={{ textAlign: "left" }}>
+            {/* Orders Navigation */}
             <Nav.Item>
               <Nav.Link
                 as={Link}
@@ -102,11 +108,20 @@ const Layout = ({ children }) => {
               )}
             </Nav.Item>
 
+            {/* Home Navigation */}
             <Nav.Item>
-              <Nav.Link as={Link} to="/" className="text-white">
+              <Nav.Link
+                as={Link}
+                to="/admin"
+                className={`text-white ${
+                  location.pathname === "/admin" ? "active" : ""
+                }`}
+              >
                 Home
               </Nav.Link>
             </Nav.Item>
+
+            {/* Customers Navigation */}
             <Nav.Item>
               <Nav.Link
                 as={Link}
@@ -118,6 +133,8 @@ const Layout = ({ children }) => {
                 Customers
               </Nav.Link>
             </Nav.Item>
+
+            {/* Vendors Navigation */}
             <Nav.Item>
               <Nav.Link
                 as={Link}
@@ -127,6 +144,79 @@ const Layout = ({ children }) => {
                 }`}
               >
                 Vendors
+              </Nav.Link>
+            </Nav.Item>
+
+            {/* Products Navigation */}
+            <Nav.Item>
+              <Nav.Link
+                as={Link}
+                to="/admin/products?type=all"
+                className="text-white"
+                style={{ fontSize: "18px", fontWeight: "bold" }}
+                onClick={() => toggleSubNav("product")}
+              >
+                Products
+              </Nav.Link>
+              {openSubNav.product && (
+                <Nav className="flex-column ms-3">
+                  <Nav.Item>
+                    <Nav.Link
+                      as={Link}
+                      to="/admin/products?type=all"
+                      className={`text-white ${
+                        location.search === "?type=all" ? "active" : ""
+                      }`}
+                    >
+                      All Products
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link
+                      as={Link}
+                      to="/admin/products?type=pending"
+                      className={`text-white ${
+                        location.search === "?type=pending" ? "active" : ""
+                      }`}
+                    >
+                      Pending
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link
+                      as={Link}
+                      to="/admin/products?type=approved"
+                      className={`text-white ${
+                        location.search === "?type=approved" ? "active" : ""
+                      }`}
+                    >
+                      Approved
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link
+                      as={Link}
+                      to="/admin/products?type=reject"
+                      className={`text-white ${
+                        location.search === "?type=reject" ? "active" : ""
+                      }`}
+                    >
+                      Rejected
+                    </Nav.Link>
+                  </Nav.Item>
+                </Nav>
+              )}
+            </Nav.Item>
+
+            <Nav.Item>
+              <Nav.Link
+                as={Link}
+                to="/admin/inventory"
+                className={`text-white ${
+                  location.pathname === "/admin/inventory" ? "active" : ""
+                }`}
+              >
+                Inventory
               </Nav.Link>
             </Nav.Item>
           </Nav>

@@ -29,6 +29,7 @@ const Vendor = () => {
   const [unitPrice, setUnitPrice] = useState("");
   const [image, setImage] = useState("");
   const [userId, setUserId] = useState("");
+  const [userName, setUserName] = useState("");
 
   const handleShow = () => {
     setError("");
@@ -45,8 +46,11 @@ const Vendor = () => {
       productCategory,
       unitPrice,
       vendorId: userId,
+      vendorName: userName,
       image,
     };
+
+    console.log(productData);
 
     try {
       const response = await axios.post(
@@ -70,6 +74,8 @@ const Vendor = () => {
       }
 
       getProducts(userId);
+
+      setShowModal(false);
     } catch (error) {
       console.error(
         "Error adding product:",
@@ -117,6 +123,7 @@ const Vendor = () => {
       user = JSON.parse(storedUserData);
       console.log(user); // Access user properties like user.name, user.email, etc.
       setUserId(user.id);
+      setUserName(user.name);
     } else {
       console.error("No user data found in localStorage.");
     }

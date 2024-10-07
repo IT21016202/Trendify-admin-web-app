@@ -10,6 +10,8 @@ import Vendors from "./components/Vendors";
 import Customers from "./components/Customers";
 import Vendor from "./pages/Vendor";
 import EditProduct from "./components/EditProduct";
+import Adminproducts from "./components/Adminproducts";
+import Admininventory from "./components/Admininventory";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/vendors" element={<Vendors />} />
           <Route path="/admin/customers" element={<Customers />} />
+          <Route path="/admin/products" element={<Adminproducts />} />
+          <Route path="/admin/inventory" element={<Admininventory />} />
 
           <Route path="/vendor" element={<Vendor />} />
           <Route path="/vendor/product/edit/:id" element={<EditProduct />} />
