@@ -10,6 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Bounce } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import Vendorlayout from "../layouts/Vendorlayout";
 
 const Vendor = () => {
   const navigate = useNavigate();
@@ -175,7 +176,7 @@ const Vendor = () => {
   };
 
   return (
-    <Layout>
+    <Vendorlayout>
       <div>
         <Vendornav />
 
@@ -418,7 +419,7 @@ const Vendor = () => {
 
         <ToastContainer />
       </div>
-    </Layout>
+    </Vendorlayout>
   );
 };
 

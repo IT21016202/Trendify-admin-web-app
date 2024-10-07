@@ -1,0 +1,35 @@
+.inventory-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.category-box,
+.chart-box {
+    width: 45%;
+    /* Adjust the width as needed */
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.category-box ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.category-box ul li {
+    margin-bottom: 10px;
+}
+
+.chart {
+    height: 300px;
+    /* Adjust height as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

@@ -171,7 +171,6 @@ const Adminproducts = () => {
               <th>Product Description</th>
               <th>Product Category</th>
               <th>Unit Price ($)</th>
-              <th>Quantity</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -185,7 +184,6 @@ const Adminproducts = () => {
                   <td>{product.productDescription}</td>
                   <td>{product.productCategory}</td>
                   <td>{product.unitPrice}</td>
-                  <td>{product.productQuantity}</td>
                   <td>{product.status}</td>
 
                   <td>
