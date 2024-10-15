@@ -31,18 +31,23 @@ const Admininventory = () => {
     if (!newCategoryName) return;
 
     try {
-      const response = await fetch("http://localhost:<port>/api/category", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ category_name: newCategoryName }),
-      });
+      const response = await fetch(
+        "https://localhost:7022/api/Inventory/addCategory",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ CategoryName: newCategoryName }),
+        }
+      );
 
       if (response.ok) {
         const createdCategory = await response.json();
         setCategories([...categories, createdCategory]);
-        setNewCategoryName(""); // Clear the input field
+        setNewCategoryName("");
+
+        fetchCategories();
       } else {
         console.error("Error creating category:", response.statusText);
       }
@@ -190,7 +195,7 @@ const Admininventory = () => {
       <div className="inventory-container">
         <div className="category-box">
           <h3>Categories</h3>
-          <form onSubmit={handleCreateCategory}>
+          <form>
             <input
               type="text"
               value={newCategoryName}
@@ -215,7 +220,7 @@ const Admininventory = () => {
               }}
             />
             <button
-              type="submit"
+              type="button"
               style={{
                 margin: "5px",
                 border: "none",
@@ -235,6 +240,7 @@ const Admininventory = () => {
                 e.currentTarget.style.backgroundColor = "#4CAF50"; // Revert to original color
                 e.currentTarget.style.transform = "scale(1)"; // Revert to original size
               }}
+              onClick={(e) => handleCreateCategory(e)}
             >
               Add Category
             </button>

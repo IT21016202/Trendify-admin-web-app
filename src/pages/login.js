@@ -48,7 +48,7 @@ const Login = () => {
           navigate("/vendor"); // Change to your vendor page URL
         } else if (response.data.userType === "Admin") {
           // Redirect to admin page
-          navigate("/admin/vendors"); // Change to your admin page URL
+          navigate("/admin"); // Change to your admin page URL
         } else {
           console.log("User type not recognized.");
         }
