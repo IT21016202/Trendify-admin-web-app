@@ -32,6 +32,7 @@ const Vendorlayout = ({ children }) => {
 
   return (
     <Container fluid>
+      
       <Row>
         {/* Sidebar */}
         <Col md={2} className="bg-dark vh-100">
@@ -130,6 +131,19 @@ const Vendorlayout = ({ children }) => {
                 }`}
               >
                 Products
+              </Nav.Link>
+            </Nav.Item>
+
+            {/* Notifications Navigation */}
+            <Nav.Item>
+              <Nav.Link
+                as={Link}
+                to="/vendor/notifications"
+                className={`text-white ${
+                  location.pathname === "/vendor/notifications" ? "active" : ""
+                }`}
+              >
+                Notifications
               </Nav.Link>
             </Nav.Item>
 

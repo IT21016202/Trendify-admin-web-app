@@ -1,29 +1,32 @@
-import React, { useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
-import axios from 'axios';
+import React, { useState } from "react";
+import { Modal, Button, Form } from "react-bootstrap";
+import axios from "axios";
 
 const UpdateOrderModal = ({ show, handleClose, order, onUpdate }) => {
   //const [status, setStatus] = useState(order ? order.status : '');
-  const [shippingAddress, setShippingAddress] = useState(order ? order.shippingAddress : '');
+  const [shippingAddress, setShippingAddress] = useState(
+    order ? order.shippingAddress : ""
+  );
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    
+
     const updatedOrder = {
       ...order,
       //status: status,
       shippingAddress: shippingAddress,
     };
 
-    axios.put(`https://localhost:7022/api/order/${order.id}`, updatedOrder)
-      .then(response => {
+    axios
+      .put(`https://localhost:7022/api/order/${order.id}`, updatedOrder)
+      .then((response) => {
         onUpdate(response.data); // Update parent component with the new order
         handleClose(); // Close the modal
-        alert('Order Updated successfully');
+        alert("Order Updated successfully");
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
-        if(error.response.status && error.response.status === 400){
+        if (error.response.status && error.response.status === 400) {
           alert(error.response.data);
         }
         handleClose(); // Close the modal
@@ -38,7 +41,6 @@ const UpdateOrderModal = ({ show, handleClose, order, onUpdate }) => {
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formOrderStatus">
-
             <Form.Label>Shipping Address</Form.Label>
             <Form.Control
               type="text"
@@ -59,13 +61,11 @@ const UpdateOrderModal = ({ show, handleClose, order, onUpdate }) => {
               <option value="Delivered">Delivered</option>
               <option value="Cancelled">Cancelled</option>
             </Form.Select> */}
-
           </Form.Group>
 
-          <Button variant="primary" type="submit" style={{marginTop: '10px'}}>
+          <Button variant="primary" type="submit" style={{ marginTop: "10px" }}>
             Update
           </Button>
-
         </Form>
       </Modal.Body>
     </Modal>

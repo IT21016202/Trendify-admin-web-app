@@ -12,6 +12,8 @@ import Vendor from "./pages/Vendor";
 import EditProduct from "./components/EditProduct";
 import Adminproducts from "./components/Adminproducts";
 import Admininventory from "./components/Admininventory";
+import UserProfile from "./pages/UserProfile";
+import Notifications from "./pages/Notifications";
 
 function App() {
   return (
@@ -22,6 +24,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/orders" element={<Orders />} />
+          <Route path="/profile" element={<UserProfile />} />
 
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/vendors" element={<Vendors />} />
@@ -29,7 +32,8 @@ function App() {
           <Route path="/admin/products" element={<Adminproducts />} />
           <Route path="/admin/inventory" element={<Admininventory />} />
 
-          <Route path="/vendor" element={<Vendor />} />
+          <Route path="/vendor" element={<Vendor/>} />
+          <Route path="/vendor/notifications" element={<Notifications/>} />
           <Route path="/vendor/product/edit/:id" element={<EditProduct />} />
         </Routes>
       </BrowserRouter>

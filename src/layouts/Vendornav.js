@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2"; // Import SweetAlert
+import { FaUserCircle } from "react-icons/fa"; // Import FontAwesome User Icon
+import { Navbar, Nav, NavDropdown } from "react-bootstrap"; // Import Bootstrap components
 
 const Vendornav = () => {
   const [userName, setUserName] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedUserData = localStorage.getItem("userData");
@@ -9,42 +14,66 @@ const Vendornav = () => {
     if (storedUserData) {
       const user = JSON.parse(storedUserData);
       console.log(user); // Access user properties like user.name, user.email, etc.
-
       setUserName(user.name);
     } else {
       console.error("No user data found in localStorage.");
     }
   }, []);
 
+  // Function to handle logout
+  const handleLogout = () => {
+    // Show SweetAlert2 confirmation dialog
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, log me out!",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // If confirmed, remove user data and redirect
+        localStorage.removeItem("userData");
+        Swal.fire("Logged Out!", "You have been logged out.", "success");
+
+        // Redirect to login page
+        navigate("/login");
+      }
+    });
+  };
+
   return (
     <div>
-      {" "}
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a
-          className="navbar-brand"
-          href="#"
-          style={{ color: "white", margin: "10px" }}
-        >
+      <Navbar bg="dark" variant="dark" expand="lg">
+        <Navbar.Brand href="#" style={{ margin: "10px" }}>
           Vendor Portal /
-        </a>
-
-        <span className="navbar-text"> Welcome, {userName}</span>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarText"
-          aria-controls="navbarText"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div
-          className="collapse navbar-collapse justify-content-center"
-          id="navbarText"
-        ></div>
-      </nav>
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="ml-auto">
+            <NavDropdown
+              title={
+                <>
+                  <FaUserCircle size={24} style={{ marginRight: "8px" }} />
+                  {userName}
+                </>
+              }
+              id="userProfileDropdown"
+            >
+              <NavDropdown.Item onClick={() => navigate("/profile")}>
+                Profile
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#">Settings</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item className="text-danger" onClick={handleLogout}>
+                Logout
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
     </div>
   );
 };
