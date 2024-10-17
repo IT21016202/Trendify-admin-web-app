@@ -1,3 +1,4 @@
+// This component displays a list of orders and allows to view, update, cancel or delete an order
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation  } from 'react-router-dom'; 
@@ -75,20 +76,20 @@ const Orders = () => {
     setShowViewModal(true);
   };
 
-  // Cancel order
-  // const handleCancel = (id) => {
-  //   const res = window.confirm('Are you sure you want to cancel this order?');
-  //   if (res) {
-  //     axios.put(`https://localhost:7022/api/order/${id}/cancel`)
-  //       .then(response => {
-  //         //setOrders(orders.map(order => order.id === id ? response.data : order));
-  //         alert('Order cancelled successfully');
-  //       })
-  //       .catch(error => {
-  //         console.log(error);
-  //       });
-  //   }
-  // };
+  //Cancel order
+  const handleCancel = (id) => {
+    const res = window.confirm('Are you sure you want to cancel this order?');
+    if (res) {
+      axios.put(`https://localhost:7022/api/order/${id}/cancel`)
+        .then(response => {
+          //setOrders(orders.map(order => order.id === id ? response.data : order));
+          alert('Order cancelled successfully');
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  };
 
   // Delete order
   const handleDelete = (id) => {
@@ -162,7 +163,7 @@ const Orders = () => {
                     <button className="btn btn-success btn-sm" style={{marginRight: '5px' , color: 'white'}}><FontAwesomeIcon icon={faPencil}/></button>
                     <button className="btn btn-info btn-sm" style={{marginRight: '5px', color: 'white'}} onClick={() => handleViewOrder(order)}><FontAwesomeIcon icon={faEye}/></button>
                     <button className="btn btn-warning btn-sm" style={{marginRight: '5px' , color: 'white'}} onClick={() => handleShow(order)}><FontAwesomeIcon icon={faPencil}/></button>
-                    {/* <button className="btn btn-danger btn-sm" style={{marginRight: '5px' , color: 'white'}} onClick={() => handleCancel(order.id)}><FontAwesomeIcon icon={faBan}/></button> */}
+                    <button className="btn btn-danger btn-sm" style={{marginRight: '5px' , color: 'white'}} onClick={() => handleCancel(order.id)}><FontAwesomeIcon icon={faBan}/></button>
                     <button className="btn btn-danger btn-sm"><FontAwesomeIcon icon={faTrash} onClick={() => handleDelete(order.id)}/></button>
                   </td>
                 </tr>

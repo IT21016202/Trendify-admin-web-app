@@ -1,20 +1,24 @@
+// This file contains the UpdateOrderModal component which is a modal that allows to update an order's status and shipping address.
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 
+// UpdateOrderModal component
 const UpdateOrderModal = ({ show, handleClose, order, onUpdate }) => {
-  //const [status, setStatus] = useState(order ? order.status : '');
+  const [status, setStatus] = useState(order ? order.status : '');
   const [shippingAddress, setShippingAddress] = useState(order ? order.shippingAddress : '');
 
+  // Handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
     
     const updatedOrder = {
       ...order,
-      //status: status,
+      status: status,
       shippingAddress: shippingAddress,
     };
 
+    // Update the order
     axios.put(`https://localhost:7022/api/order/${order.id}`, updatedOrder)
       .then(response => {
         onUpdate(response.data); // Update parent component with the new order
@@ -47,7 +51,7 @@ const UpdateOrderModal = ({ show, handleClose, order, onUpdate }) => {
               onChange={(e) => setShippingAddress(e.target.value)}
             />
 
-            {/* <Form.Label>Status</Form.Label>
+            <Form.Label>Status</Form.Label>
             <Form.Select
               defaultValue={status}
               onChange={(e) => setStatus(e.target.value)}
@@ -58,7 +62,7 @@ const UpdateOrderModal = ({ show, handleClose, order, onUpdate }) => {
               <option value="Dispatched">Dispatched</option>
               <option value="Delivered">Delivered</option>
               <option value="Cancelled">Cancelled</option>
-            </Form.Select> */}
+            </Form.Select>
 
           </Form.Group>
 
@@ -72,4 +76,4 @@ const UpdateOrderModal = ({ show, handleClose, order, onUpdate }) => {
   );
 };
 
-export default UpdateOrderModal;
+export default UpdateOrderModal; // Export the UpdateOrderModal component
