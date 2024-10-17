@@ -17,6 +17,7 @@ const Vendors = () => {
   const [vendorPhone, setVendorPhone] = useState("");
   const [vendorPassword, setVendorPassword] = useState("");
   const [vendorCPassword, setVendorCPassword] = useState("");
+  const [vendorDecription, setVendorDecription] = useState("");
 
   const BASE_URL = "https://localhost:7022/api/Vendor"; // Replace with your actual API URL
 
@@ -70,6 +71,7 @@ const Vendors = () => {
       PhoneNumber: vendorPhone,
       Password: vendorPassword,
       ConfirmPassword: vendorCPassword,
+      Description: vendorDecription,
     };
 
     try {
@@ -188,6 +190,19 @@ const Vendors = () => {
                   id="vendorPhone"
                   value={vendorPhone}
                   onChange={(e) => setVendorPhone(e.target.value)} // Update state on input change
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="vendorPhone" className="form-label">
+                  Description
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="vendorPhone"
+                  value={vendorDecription}
+                  onChange={(e) => setVendorDecription(e.target.value)} // Update state on input change
                   required
                 />
               </div>

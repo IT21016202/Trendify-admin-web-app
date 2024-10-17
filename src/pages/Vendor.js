@@ -31,6 +31,7 @@ const Vendor = () => {
   const [image, setImage] = useState("");
   const [userId, setUserId] = useState("");
   const [userName, setUserName] = useState("");
+  const [categories, setCategories] = useState([]);
 
   const handleShow = () => {
     setError("");
@@ -61,7 +62,7 @@ const Vendor = () => {
       console.log("Product added successfully:", response.data);
 
       if (response.status === 201) {
-        toast.success("Registration Successfull", {
+        toast.success("Product added successfully", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -115,6 +116,20 @@ const Vendor = () => {
     }
   };
 
+  const getCategories = async () => {
+    try {
+      const response = await fetch(
+        "https://localhost:7022/api/Inventory/getCategories"
+      );
+      const data = await response.json();
+      setCategories(data);
+
+      console.log(data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
   // useEffect to fetch customers on component mount
   useEffect(() => {
     const storedUserData = localStorage.getItem("userData");
@@ -130,6 +145,7 @@ const Vendor = () => {
     }
 
     getProducts(user.id); // Update this with your vendor page URL
+    getCategories();
   }, []);
   if (loading) {
     return <div>Loading...</div>;
@@ -256,14 +272,12 @@ const Vendor = () => {
                 >
                   <option value="" disabled>
                     Select a category
-                  </option>{" "}
-                  {/* Placeholder option */}
-                  <option value="Electronics">Electronics</option>
-                  <option value="Clothing">Clothing</option>
-                  <option value="Home & Garden">Home & Garden</option>
-                  <option value="Sports & Outdoors">Sports & Outdoors</option>
-                  <option value="Toys & Games">Toys & Games</option>
-                  {/* Add more options as necessary */}
+                  </option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.categoryName}>
+                      {category.categoryName}
+                    </option>
+                  ))}
                 </select>
               </div>
 
