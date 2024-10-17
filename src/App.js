@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Orders from "./components/Orders";
-import Login from "./pages/Login";
+import Login from "./pages/login";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Admin from "./pages/Admin";
@@ -32,8 +32,8 @@ function App() {
           <Route path="/admin/products" element={<Adminproducts />} />
           <Route path="/admin/inventory" element={<Admininventory />} />
 
-          <Route path="/vendor" element={<Vendor/>} />
-          <Route path="/vendor/notifications" element={<Notifications/>} />
+          <Route path="/vendor" element={<Vendor />} />
+          <Route path="/vendor/notifications" element={<Notifications />} />
           <Route path="/vendor/product/edit/:id" element={<EditProduct />} />
         </Routes>
       </BrowserRouter>
