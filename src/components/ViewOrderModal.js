@@ -1,24 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { Modal, Button, Table } from "react-bootstrap";
+// ViewOrderModal component to display order details in a modal
+import React, {useEffect, useState} from 'react';
+import { Modal, Button, Table } from 'react-bootstrap';
 
+// ViewOrderModal component
 const ViewOrderModal = ({ show, handleClose, order }) => {
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
 
-  useEffect(() => {
-    if (order) {
-      fetch(`https://localhost:7022/api/customer/${order.userId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          //console.log(data)
-          setCustomerName(data.customerName);
-          setCustomerEmail(data.email);
-        })
-        .catch((error) => {
-          console.error("There was an error!", error);
-        });
-    }
-  }, [order]);
+  // Fetch customer details
+    useEffect(() => {
+        if (order) {
+            fetch(`https://localhost:7022/api/customer/${order.userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    //console.log(data)
+                    setCustomerName(data.customerName);
+                    setCustomerEmail(data.email);
+                })
+                .catch(error => {
+                    console.error('There was an error!', error);
+                });
+        }
+    }, [order]);
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -97,4 +100,4 @@ const ViewOrderModal = ({ show, handleClose, order }) => {
   );
 };
 
-export default ViewOrderModal;
+export default ViewOrderModal; // Export the ViewOrderModal component
