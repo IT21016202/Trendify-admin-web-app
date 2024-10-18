@@ -2,6 +2,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Orders from "./components/Orders";
+import VendorOrders from "./components/VendorOrders"; 
 import Login from "./pages/login";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
@@ -14,6 +15,7 @@ import Adminproducts from "./components/Adminproducts";
 import Admininventory from "./components/Admininventory";
 import UserProfile from "./pages/UserProfile";
 import Notifications from "./pages/Notifications";
+import VendorProducts from "./components/VendorProducts";
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
           <Route path="/admin/inventory" element={<Admininventory />} />
 
           <Route path="/vendor" element={<Vendor />} />
+          <Route path="/vendor/products" element={<VendorProducts/>} />
+          <Route path="/vendor-orders" element={<VendorOrders />} /> 
           <Route path="/vendor/notifications" element={<Notifications />} />
           <Route path="/vendor/product/edit/:id" element={<EditProduct />} />
         </Routes>

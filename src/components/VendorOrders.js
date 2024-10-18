@@ -9,7 +9,7 @@ import {
   faEye,
   faBan,
 } from "@fortawesome/free-solid-svg-icons";
-import Layout from "../layouts/Layout";
+import Layout from "../layouts/Vendorlayout";
 import UpdateOrderModal from "./UpdateOrderModal";
 import ViewOrderModal from "./ViewOrderModal";
 
@@ -30,34 +30,32 @@ const Orders = () => {
   const queryParams = new URLSearchParams(location.search);
   const orderType = queryParams.get("type"); // Get 'type' parameter
 
+
+  const vendorId = "67024168be53270045c37650";
+
   useEffect(() => {
     axios
-      .get("https://localhost:7022/api/order")
+      .get(`https://localhost:7022/api/Order/vendor/${vendorId}`)
       .then((response) => {
-        if (orderType === "all") {
-          setOrders(response.data);
-        } else if (orderType === "processing") {
-          setOrders(
-            response.data.filter((order) => order.status === "Processing")
-          );
+        let filteredOrders = response.data;
+        
+        if (orderType === "processing") {
+          filteredOrders = filteredOrders.filter(order => order.status === "Processing");
         } else if (orderType === "dispatched") {
-          setOrders(
-            response.data.filter((order) => order.status === "Dispatched")
-          );
+          filteredOrders = filteredOrders.filter(order => order.status === "Dispatched");
         } else if (orderType === "delivered") {
-          setOrders(
-            response.data.filter((order) => order.status === "Delivered")
-          );
+          filteredOrders = filteredOrders.filter(order => order.status === "Delivered");
         } else if (orderType === "cancelled") {
-          setOrders(
-            response.data.filter((order) => order.status === "Cancelled")
-          );
+          filteredOrders = filteredOrders.filter(order => order.status === "Cancelled");
         }
+        // If orderType is "all" or not specified, we use all orders
+
+        setOrders(filteredOrders);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [orderType]);
+  }, [orderType, vendorId]);
 
   const filteredOrders = orders.filter((order) => {
     const userFilter = order.userId
